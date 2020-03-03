@@ -448,6 +448,7 @@ class PurchasesTest {
             queriedINAPP = emptyMap(),
             notInCache = emptyList()
         )
+        mockSubscriberAttributesManager()
         Purchases.sharedInstance.onAppForegrounded()
         verify (exactly = 1) {
             mockBackend.getPurchaserInfo(eq(appUserId), any(), any())
@@ -463,6 +464,7 @@ class PurchasesTest {
             queriedINAPP = emptyMap(),
             notInCache = emptyList()
         )
+        mockSubscriberAttributesManager()
         Purchases.sharedInstance.onAppForegrounded()
         verify (exactly = 1) {
             mockBackend.getOfferings(eq(appUserId), any(), any())
@@ -478,6 +480,7 @@ class PurchasesTest {
             queriedINAPP = emptyMap(),
             notInCache = emptyList()
         )
+        mockSubscriberAttributesManager()
         Purchases.sharedInstance.onAppForegrounded()
         verify (exactly = 0){
             mockBackend.getPurchaserInfo(eq(appUserId), any(), any())
@@ -493,6 +496,7 @@ class PurchasesTest {
             queriedINAPP = emptyMap(),
             notInCache = emptyList()
         )
+        mockSubscriberAttributesManager()
         Purchases.sharedInstance.onAppForegrounded()
         verify (exactly = 0){
             mockBackend.getOfferings(eq(appUserId), any(), any())
@@ -2688,6 +2692,7 @@ class PurchasesTest {
             queriedINAPP = emptyMap(),
             notInCache = emptyList()
         )
+        mockSubscriberAttributesManager()
         purchases.onAppForegrounded()
         verify (exactly = 1) {
             mockBillingWrapper.queryPurchases(PurchaseType.SUBS.toSKUType()!!)
@@ -3424,6 +3429,12 @@ class PurchasesTest {
         every {
             mockCache.isOfferingsCacheStale()
         } returns offeringsStale
+    }
+
+    private fun mockSubscriberAttributesManager() {
+        every {
+            mockSubscriberAttributesManager.syncronizeSusbcriberAttributes(appUserId, any(), any())
+        } just Runs
     }
 
     // endregion

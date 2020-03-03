@@ -139,6 +139,7 @@ class Purchases @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) intern
     /** @suppress */
     override fun onAppBackgrounded() {
         debugLog("App backgrounded")
+        synchronizeSubscriberAttributes()
     }
 
     /** @suppress */
@@ -153,6 +154,7 @@ class Purchases @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) intern
             fetchAndCacheOfferings(identityManager.currentAppUserID)
         }
         updatePendingPurchaseQueue()
+        synchronizeSubscriberAttributes()
     }
 
     // region Public Methods
@@ -1067,6 +1069,18 @@ class Purchases @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE) intern
         } else {
             debugLog("[QueryPurchases] Skipping updating pending purchase queue since BillingClient is not connected yet")
         }
+    }
+
+    private fun synchronizeSubscriberAttributes() {
+        subscriberAttributesManager.syncronizeSusbcriberAttributes(
+            appUserID,
+            {
+                debugLog("Subscriber attributes synced successfully.")
+            },
+            { error ->
+                errorLog("There was an error syncing subscriber attributes. Error: $error")
+            }
+        )
     }
 
     // endregion

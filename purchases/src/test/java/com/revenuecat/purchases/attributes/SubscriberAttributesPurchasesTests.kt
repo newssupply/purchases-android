@@ -111,4 +111,28 @@ class SubscriberAttributesPurchasesTests {
             )
         }
     }
+
+    @Test
+    fun `on app foregrounded attributes are synced`() {
+        every {
+            subscriberAttributesManagerMock.syncronizeSusbcriberAttributes(appUserId, any(), any())
+        } just Runs
+        setup()
+        underTest.onAppForegrounded()
+        verify (exactly = 1) {
+            subscriberAttributesManagerMock.syncronizeSusbcriberAttributes(appUserId, any(), any())
+        }
+    }
+
+    @Test
+    fun `on app backgrounded attributes are synced`() {
+        every {
+            subscriberAttributesManagerMock.syncronizeSusbcriberAttributes(appUserId, any(), any())
+        } just Runs
+        setup()
+        underTest.onAppBackgrounded()
+        verify (exactly = 1) {
+            subscriberAttributesManagerMock.syncronizeSusbcriberAttributes(appUserId, any(), any())
+        }
+    }
 }
